@@ -1,5 +1,6 @@
 package br.com.sicredi.vote.model;
 
+import br.com.sicredi.vote.dto.StatusChave;
 import br.com.sicredi.vote.dto.TipoChave;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
@@ -34,12 +35,21 @@ public class ChavePix  implements Persistable<UUID> {
     private TipoChave tipoChave;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_chave")
+    private StatusChave statusChave;
+
+    @NonNull
     @Column(name = "valor_chave", updatable = false, unique = true)
     private String valorChave;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_cadastro", updatable = false)
     private Calendar dataCadastro;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "data_inativacao")
+    private Calendar dataInativacao;
 
     @Override
     public boolean isNew() {

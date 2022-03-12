@@ -55,7 +55,7 @@ public class ContaService {
 
         Conta conta;
 
-        if (chave.isPresent()) {
+        if (chave.isPresent() && chave.get().getStatusChave().equals(StatusChave.ATIVO)) {
             try {
                 conta = chave.get().getConta();
                 conta.setNumAgencia(putRequestDTO.getNumAgencia());

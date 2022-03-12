@@ -1,5 +1,6 @@
 package br.com.sicredi.vote.controller;
 
+import br.com.sicredi.vote.dto.PixResponseDTO;
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
 import br.com.sicredi.vote.dto.PixPutRequestDTO;
 import br.com.sicredi.vote.dto.PixPutResponseDTO;
@@ -7,7 +8,6 @@ import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.service.ChavePixService;
 import br.com.sicredi.vote.service.ContaService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +28,18 @@ public class PixController {
     }
 
     @PutMapping
-    public ResponseEntity<PixPutResponseDTO> addPix(@Valid @RequestBody PixPutRequestDTO putRequestDTO) throws PixException{
+    public ResponseEntity<PixPutResponseDTO> updatePix(@Valid @RequestBody PixPutRequestDTO putRequestDTO) throws PixException{
         return ResponseEntity.ok(contaService.atualizaConta(putRequestDTO));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<PixResponseDTO> deletePix(@PathVariable UUID id) throws PixException{
+        return ResponseEntity.ok(chavePixService.inativaChavePix(id));
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<PixResponseDTO> consultaPorId(@PathVariable UUID id) throws PixException{
+        return ResponseEntity.ok(chavePixService.consultaPorId(id));
     }
 
 }
