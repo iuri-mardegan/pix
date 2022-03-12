@@ -31,7 +31,7 @@ public class ChavePix  implements Persistable<UUID> {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_chave")
+    @Column(name = "tipo_chave", columnDefinition = "varchar(9)")
     private TipoChave tipoChave;
 
     @NonNull
@@ -40,7 +40,7 @@ public class ChavePix  implements Persistable<UUID> {
     private StatusChave statusChave;
 
     @NonNull
-    @Column(name = "valor_chave", updatable = false, unique = true)
+    @Column(name = "valor_chave", columnDefinition = "varchar(77)", updatable = false, unique = true)
     private String valorChave;
 
     @Temporal(TemporalType.TIMESTAMP)

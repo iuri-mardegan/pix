@@ -7,6 +7,8 @@ import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.model.Conta;
 
 public interface ContaService {
+
     Conta insereOuBuscaConta(PixPostRequestDTO pixRequestDTO) throws PixException;
+
     PixPutResponseDTO atualizaConta(PixPutRequestDTO putRequestDTO) throws PixException;
 }

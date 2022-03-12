@@ -116,7 +116,6 @@ public class ChavePixServiceImpl implements ChavePixService {
 
     @Override
     public List<PixGetResponseRequestDTO> consulta(PixGetResponseRequestDTO pixResponseRequestDTO) throws PixException {
-
         List<PixGetResponseRequestDTO> list = new ArrayList<>();
         chavePixRepository.findByFilter(pixResponseRequestDTO.getTipoChave(),
                 pixResponseRequestDTO.getValChave(),
@@ -125,18 +124,19 @@ public class ChavePixServiceImpl implements ChavePixService {
                 pixResponseRequestDTO.getNumAgencia(),
                 pixResponseRequestDTO.getNumConta(),
                 pixResponseRequestDTO.getNomeCorrentista(),
-                pixResponseRequestDTO.getSobrenomeCorrentista()).forEach(chavePix -> list.add(PixGetResponseRequestDTO.builder()
-                                                                                            .id(chavePix.getId())
-                                                                                            .tipoChave(chavePix.getTipoChave())
-                                                                                            .valChave(chavePix.getValorChave())
-                                                                                            .tipoConta(chavePix.getConta().getTipoConta())
-                                                                                            .numAgencia(chavePix.getConta().getNumAgencia())
-                                                                                            .numConta(chavePix.getConta().getNumConta())
-                                                                                            .nomeCorrentista(chavePix.getConta().getNomeCorrentista())
-                                                                                            .sobrenomeCorrentista(chavePix.getConta().getSobrenomeCorrentista())
-                                                                                            .dataHoraCadastro(chavePix.getDataCadastro())
-                                                                                            .dataHoraInativacao(chavePix.getDataInativacao())
-                                                                                            .build()));
+                pixResponseRequestDTO.getSobrenomeCorrentista())
+                .forEach(chavePix -> list.add(PixGetResponseRequestDTO.builder()
+                                    .id(chavePix.getId())
+                                    .tipoChave(chavePix.getTipoChave())
+                                    .valChave(chavePix.getValorChave())
+                                    .tipoConta(chavePix.getConta().getTipoConta())
+                                    .numAgencia(chavePix.getConta().getNumAgencia())
+                                    .numConta(chavePix.getConta().getNumConta())
+                                    .nomeCorrentista(chavePix.getConta().getNomeCorrentista())
+                                    .sobrenomeCorrentista(chavePix.getConta().getSobrenomeCorrentista())
+                                    .dataHoraCadastro(chavePix.getDataCadastro())
+                                    .dataHoraInativacao(chavePix.getDataInativacao())
+                                    .build()));
         return list;
     }
 }

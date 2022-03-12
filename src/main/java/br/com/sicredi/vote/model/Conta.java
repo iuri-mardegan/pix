@@ -24,10 +24,10 @@ public class Conta  implements Persistable<UUID> {
     @Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
-    @Column(name = "nome_correntista")
+    @Column(name = "nome_correntista", columnDefinition = "varchar(30)")
     private String nomeCorrentista;
 
-    @Column(name = "sobrenome_correntista")
+    @Column(name = "sobrenome_correntista", columnDefinition = "varchar(45)")
     private String sobrenomeCorrentista;
 
     @NonNull
@@ -39,7 +39,7 @@ public class Conta  implements Persistable<UUID> {
     private Long numConta;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo_conta")
+    @Column(name = "tipo_conta", columnDefinition = "varchar(10)")
     private TipoConta tipoConta;
 
     @Enumerated(EnumType.STRING)

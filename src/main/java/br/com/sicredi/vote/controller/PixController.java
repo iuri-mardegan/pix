@@ -44,7 +44,7 @@ public class PixController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PixGetResponseRequestDTO>> consultaPorId(@RequestBody PixGetResponseRequestDTO pixResponseRequestDTO) throws PixException {
+    public ResponseEntity<List<PixGetResponseRequestDTO>> consultaPorFiltro(@RequestBody PixGetResponseRequestDTO pixResponseRequestDTO) throws PixException {
         return ResponseEntity.ok(chavePixService.consulta(pixResponseRequestDTO));
     }
 
