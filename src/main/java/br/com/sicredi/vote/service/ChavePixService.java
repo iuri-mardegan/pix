@@ -1,7 +1,7 @@
 package br.com.sicredi.vote.service;
 
-import br.com.sicredi.vote.dto.PixResponseDTO;
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
+import br.com.sicredi.vote.dto.PixResponseDTO;
 import br.com.sicredi.vote.dto.StatusChave;
 import br.com.sicredi.vote.dto.TipoPessoaConta;
 import br.com.sicredi.vote.exception.PixException;
@@ -117,4 +117,5 @@ public class ChavePixService {
                 .tipoChave(chave.getTipoChave())
                 .build();
     }
+
 }

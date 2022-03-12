@@ -1,9 +1,9 @@
 package br.com.sicredi.vote.controller;
 
-import br.com.sicredi.vote.dto.PixResponseDTO;
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
 import br.com.sicredi.vote.dto.PixPutRequestDTO;
 import br.com.sicredi.vote.dto.PixPutResponseDTO;
+import br.com.sicredi.vote.dto.PixResponseDTO;
 import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.service.ChavePixService;
 import br.com.sicredi.vote.service.ContaService;

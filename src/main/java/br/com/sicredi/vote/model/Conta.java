@@ -7,7 +7,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
 import java.util.List;
 import java.util.UUID;
 
