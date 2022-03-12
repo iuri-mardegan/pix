@@ -1,72 +1,56 @@
 package br.com.sicredi.vote.service;
 
-import br.com.sicredi.vote.dto.PixRequestDTO;
+import br.com.sicredi.vote.dto.PixPostRequestDTO;
+import br.com.sicredi.vote.dto.TipoPessoaConta;
 import br.com.sicredi.vote.exception.PixException;
-import br.com.sicredi.vote.model.Conta;
 import br.com.sicredi.vote.model.ChavePix;
-import br.com.sicredi.vote.repository.ContaRepository;
+import br.com.sicredi.vote.model.Conta;
 import br.com.sicredi.vote.repository.ChavePixRepository;
 import br.com.sicredi.vote.util.Validate;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.Calendar;
-import java.util.List;
-import java.util.Optional;
+import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class ChavePixService {
 
-    @Autowired
-    private ChavePixRepository chavePixRepository;
-    @Autowired
-    private ContaRepository contaRepository;
+    private final ChavePixRepository chavePixRepository;
+    private final ContaService contaService;
 
-    public void addPix(PixRequestDTO pixRequestDTO) throws PixException {
-        validaChave(pixRequestDTO);
+    public UUID addPix(PixPostRequestDTO pixRequestDTO) throws PixException {
 
-        Optional<Conta> contaOptional = contaRepository.findOne(Example.of(Conta.builder().numConta(pixRequestDTO.getNumConta()).numAgencia(pixRequestDTO.getNumAgencia()).build()));
+        Conta conta = contaService.insereOuBuscaConta(pixRequestDTO);
 
-        Conta conta;
+        return persistChavePix(pixRequestDTO, conta);
+    }
 
-        if (!contaOptional.isPresent()) {
-            try {
-                conta = contaRepository.save(Conta.builder()
-                        .numAgencia(pixRequestDTO.getNumAgencia())
-                        .numConta(pixRequestDTO.getNumConta())
-                        .nomeCorrentista(pixRequestDTO.getNomeCorrentista())
-                        .sobrenomeCorrentista(pixRequestDTO.getSobrenomeCorrentista())
-                        .tipoConta(pixRequestDTO.getTipoConta())
-                        .build());
-
-            } catch (DataIntegrityViolationException e) {
-                throw new PixException("Campos de conta preenchidos incorretamente");
-            }
-        } else {
-            conta = contaOptional.get();
-        }
-
-        if (chavePixRepository.findByConta(conta).size() >= 5)
-            throw new PixException("Limite de chave excedido!");
+    private UUID persistChavePix(PixPostRequestDTO pixRequestDTO, Conta conta) throws PixException {
+        validaChave(pixRequestDTO, conta);
 
         try {
-            chavePixRepository.save(ChavePix.builder()
+            return chavePixRepository.save(ChavePix.builder()
                     .tipoChave(pixRequestDTO.getTipoChave())
                     .valorChave(pixRequestDTO.getValChave())
                     .conta(conta)
                     .dataCadastro(Calendar.getInstance())
-                    .build());
+                    .build()).getId();
 
         } catch (DataIntegrityViolationException e) {
-            throw new PixException("Campos de chave preenchidos incorretamente");
+            throw new PixException("Esta Chave ja esta em uso.");
         } catch (Exception e) {
             throw new PixException(e.getMessage());
         }
     }
 
-    private void validaChave(PixRequestDTO pixRequestDTO) throws PixException {
+    private void validaChave(PixPostRequestDTO pixRequestDTO, Conta conta) throws PixException {
+        if ((conta.getTipoPessoaConta().equals(TipoPessoaConta.PF) && chavePixRepository.findByConta(conta).size() >= 5)
+                || (conta.getTipoPessoaConta().equals(TipoPessoaConta.PJ) && chavePixRepository.findByConta(conta).size() >= 20))
+            throw new PixException("Limite de chave excedido!");
+
         switch (pixRequestDTO.getTipoChave()) {
             case CPF:
                 Validate.validaCpf(pixRequestDTO.getValChave());
@@ -81,5 +65,4 @@ public class ChavePixService {
                 throw new PixException("Tipo de chave invalida!");
         }
     }
-
 }

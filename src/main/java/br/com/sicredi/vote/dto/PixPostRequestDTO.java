@@ -6,13 +6,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PixRequestDTO {
+public class PixPostRequestDTO {
 
     @NonNull
     @JsonProperty(required = true)
@@ -40,5 +37,8 @@ public class PixRequestDTO {
 
     @JsonProperty
     private String sobrenomeCorrentista;
+
+    @JsonProperty
+    private TipoPessoaConta tipoPessoaConta;
 
 }

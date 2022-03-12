@@ -2,6 +2,8 @@ package br.com.sicredi.vote.model;
 
 import br.com.sicredi.vote.dto.TipoChave;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.util.Calendar;
@@ -13,11 +15,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChavePix {
+public class ChavePix  implements Persistable<UUID> {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    @Column(name = "id")
+    @GenericGenerator(name = "UUIDGenerator2", strategy = "uuid2")
+    @GeneratedValue(generator = "UUIDGenerator2")
+    @Column(name = "id", columnDefinition = "uuid", updatable = false, nullable = false)
     private UUID id;
 
     @NonNull
@@ -37,4 +40,9 @@ public class ChavePix {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "data_cadastro", updatable = false)
     private Calendar dataCadastro;
+
+    @Override
+    public boolean isNew() {
+        return id == null;
+    }
 }
