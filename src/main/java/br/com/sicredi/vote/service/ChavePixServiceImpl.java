@@ -1,29 +1,35 @@
 package br.com.sicredi.vote.service;
 
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
-import br.com.sicredi.vote.dto.PixResponseDTO;
-import br.com.sicredi.vote.dto.StatusChave;
-import br.com.sicredi.vote.dto.TipoPessoaConta;
+import br.com.sicredi.vote.dto.PixResponseRequestDTO;
+import br.com.sicredi.vote.dto.enums.StatusChave;
+import br.com.sicredi.vote.dto.enums.TipoChave;
+import br.com.sicredi.vote.dto.enums.TipoConta;
+import br.com.sicredi.vote.dto.enums.TipoPessoaConta;
 import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.model.ChavePix;
 import br.com.sicredi.vote.model.Conta;
 import br.com.sicredi.vote.repository.ChavePixRepository;
+import br.com.sicredi.vote.service.interfaces.ChavePixService;
+import br.com.sicredi.vote.service.interfaces.ContaService;
 import br.com.sicredi.vote.util.Validate;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
-public class ChavePixService {
+public class ChavePixServiceImpl implements ChavePixService {
 
     private final ChavePixRepository chavePixRepository;
     private final ContaService contaService;
 
+    @Override
     public UUID addPix(PixPostRequestDTO pixRequestDTO) throws PixException {
 
         Conta conta = contaService.insereOuBuscaConta(pixRequestDTO);
@@ -70,29 +76,20 @@ public class ChavePixService {
         }
     }
 
-    public PixResponseDTO consultaPorId(UUID id) throws PixException {
+    @Override
+    public PixResponseRequestDTO consultaPorId(UUID id) throws PixException {
         Optional<ChavePix> chaveOptional = chavePixRepository.findById(id);
 
         if (chaveOptional.isPresent()) {
             ChavePix chave = chaveOptional.get();
-            return PixResponseDTO.builder()
-                    .dataHoraCadastro(chave.getDataCadastro())
-                    .dataHoraInativacao(chave.getDataInativacao())
-                    .id(chave.getId())
-                    .numAgencia(chave.getConta().getNumAgencia())
-                    .numConta(chave.getConta().getNumConta())
-                    .nomeCorrentista(chave.getConta().getNomeCorrentista())
-                    .sobrenomeCorrentista(chave.getConta().getSobrenomeCorrentista())
-                    .valChave(chave.getValorChave())
-                    .tipoConta(chave.getConta().getTipoConta())
-                    .tipoChave(chave.getTipoChave())
-                    .build();
+            return converteParaPixResponse(chave);
         } else {
             throw new PixException("Chave nao encontrada.");
         }
     }
 
-    public PixResponseDTO inativaChavePix(UUID id) throws PixException {
+    @Override
+    public PixResponseRequestDTO inativaChavePix(UUID id) throws PixException {
         Optional<ChavePix> chaveOptional = chavePixRepository.findById(id);
 
         ChavePix chave;
@@ -104,7 +101,11 @@ public class ChavePixService {
         } else {
             throw new PixException("Chave invalida para inativacao.");
         }
-        return PixResponseDTO.builder()
+        return converteParaPixResponse(chave);
+    }
+
+    private PixResponseRequestDTO converteParaPixResponse(ChavePix chave) {
+        return PixResponseRequestDTO.builder()
                 .dataHoraCadastro(chave.getDataCadastro())
                 .dataHoraInativacao(chave.getDataInativacao())
                 .id(chave.getId())
@@ -118,4 +119,29 @@ public class ChavePixService {
                 .build();
     }
 
+    @Override
+    public List<PixResponseRequestDTO> consulta(PixResponseRequestDTO pixResponseRequestDTO) throws PixException {
+
+        List<PixResponseRequestDTO> list = new ArrayList<>();
+        chavePixRepository.findByFilter(pixResponseRequestDTO.getTipoChave(),
+                pixResponseRequestDTO.getValChave(),
+                pixResponseRequestDTO.getDataHoraCadastro(),
+                pixResponseRequestDTO.getDataHoraInativacao(),
+                pixResponseRequestDTO.getNumAgencia(),
+                pixResponseRequestDTO.getNumConta(),
+                pixResponseRequestDTO.getNomeCorrentista(),
+                pixResponseRequestDTO.getSobrenomeCorrentista()).forEach(chavePix -> list.add(PixResponseRequestDTO.builder()
+                                                                                            .id(chavePix.getId())
+                                                                                            .tipoChave(chavePix.getTipoChave())
+                                                                                            .valChave(chavePix.getValorChave())
+                                                                                            .tipoConta(chavePix.getConta().getTipoConta())
+                                                                                            .numAgencia(chavePix.getConta().getNumAgencia())
+                                                                                            .numConta(chavePix.getConta().getNumConta())
+                                                                                            .nomeCorrentista(chavePix.getConta().getNomeCorrentista())
+                                                                                            .sobrenomeCorrentista(chavePix.getConta().getSobrenomeCorrentista())
+                                                                                            .dataHoraCadastro(chavePix.getDataCadastro())
+                                                                                            .dataHoraInativacao(chavePix.getDataInativacao())
+                                                                                            .build()));
+        return list;
+    }
 }

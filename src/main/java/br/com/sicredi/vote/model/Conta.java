@@ -1,7 +1,7 @@
 package br.com.sicredi.vote.model;
 
-import br.com.sicredi.vote.dto.TipoConta;
-import br.com.sicredi.vote.dto.TipoPessoaConta;
+import br.com.sicredi.vote.dto.enums.TipoConta;
+import br.com.sicredi.vote.dto.enums.TipoPessoaConta;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.domain.Persistable;

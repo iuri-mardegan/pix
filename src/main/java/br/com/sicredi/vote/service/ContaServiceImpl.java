@@ -1,11 +1,14 @@
 package br.com.sicredi.vote.service;
 
 import br.com.sicredi.vote.dto.*;
+import br.com.sicredi.vote.dto.enums.StatusChave;
+import br.com.sicredi.vote.dto.enums.TipoPessoaConta;
 import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.model.ChavePix;
 import br.com.sicredi.vote.model.Conta;
 import br.com.sicredi.vote.repository.ChavePixRepository;
 import br.com.sicredi.vote.repository.ContaRepository;
+import br.com.sicredi.vote.service.interfaces.ContaService;
 import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Example;
@@ -17,11 +20,12 @@ import static java.util.Objects.isNull;
 
 @Service
 @AllArgsConstructor
-public class ContaService {
+public class ContaServiceImpl implements ContaService {
 
     private final ContaRepository contaRepository;
     private final ChavePixRepository chavePixRepository;
 
+    @Override
     public Conta insereOuBuscaConta(PixPostRequestDTO pixRequestDTO) throws PixException {
         Optional<Conta> contaOptional = contaRepository.findOne(Example.of(Conta.builder().numConta(pixRequestDTO.getNumConta()).numAgencia(pixRequestDTO.getNumAgencia()).build()));
 
@@ -48,6 +52,7 @@ public class ContaService {
         return conta;
     }
 
+    @Override
     public PixPutResponseDTO atualizaConta(PixPutRequestDTO putRequestDTO) throws PixException {
         Optional<ChavePix> chave = chavePixRepository.findById(putRequestDTO.getId());
 

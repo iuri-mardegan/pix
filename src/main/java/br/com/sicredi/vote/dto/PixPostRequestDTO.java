@@ -1,5 +1,8 @@
 package br.com.sicredi.vote.dto;
 
+import br.com.sicredi.vote.dto.enums.TipoChave;
+import br.com.sicredi.vote.dto.enums.TipoConta;
+import br.com.sicredi.vote.dto.enums.TipoPessoaConta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
