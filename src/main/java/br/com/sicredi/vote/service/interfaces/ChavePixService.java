@@ -1,7 +1,7 @@
 package br.com.sicredi.vote.service.interfaces;
 
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
-import br.com.sicredi.vote.dto.PixResponseRequestDTO;
+import br.com.sicredi.vote.dto.PixGetResponseRequestDTO;
 import br.com.sicredi.vote.exception.PixException;
 
 import java.util.List;
@@ -11,9 +11,9 @@ public interface ChavePixService {
 
     UUID addPix(PixPostRequestDTO pixRequestDTO) throws PixException;
 
-    PixResponseRequestDTO consultaPorId(UUID id) throws PixException;
+    PixGetResponseRequestDTO consultaPorId(UUID id) throws PixException;
 
-    List<PixResponseRequestDTO> consulta(PixResponseRequestDTO pixResponseRequestDTO) throws PixException;
+    List<PixGetResponseRequestDTO> consulta(PixGetResponseRequestDTO pixResponseRequestDTO) throws PixException;
 
-    PixResponseRequestDTO inativaChavePix(UUID id) throws PixException;
+    PixGetResponseRequestDTO inativaChavePix(UUID id) throws PixException;
 }

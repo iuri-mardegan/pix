@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NonNull;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -14,7 +13,7 @@ import java.util.UUID;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class PixResponseRequestDTO {
+public class PixGetResponseRequestDTO {
 
     @JsonProperty(required = true)
     private UUID id;

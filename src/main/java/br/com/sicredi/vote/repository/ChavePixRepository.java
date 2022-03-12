@@ -1,6 +1,5 @@
 package br.com.sicredi.vote.repository;
 
-import br.com.sicredi.vote.dto.PixResponseRequestDTO;
 import br.com.sicredi.vote.dto.enums.TipoChave;
 import br.com.sicredi.vote.model.ChavePix;
 import br.com.sicredi.vote.model.Conta;

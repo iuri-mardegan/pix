@@ -3,7 +3,7 @@ package br.com.sicredi.vote.controller;
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
 import br.com.sicredi.vote.dto.PixPutRequestDTO;
 import br.com.sicredi.vote.dto.PixPutResponseDTO;
-import br.com.sicredi.vote.dto.PixResponseRequestDTO;
+import br.com.sicredi.vote.dto.PixGetResponseRequestDTO;
 import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.service.interfaces.ChavePixService;
 import br.com.sicredi.vote.service.interfaces.ContaService;
@@ -34,17 +34,17 @@ public class PixController {
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<PixResponseRequestDTO> deletePix(@PathVariable UUID id) throws PixException {
+    public ResponseEntity<PixGetResponseRequestDTO> deletePix(@PathVariable UUID id) throws PixException {
         return ResponseEntity.ok(chavePixService.inativaChavePix(id));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<PixResponseRequestDTO> consultaPorId(@PathVariable UUID id) throws PixException {
+    public ResponseEntity<PixGetResponseRequestDTO> consultaPorId(@PathVariable UUID id) throws PixException {
         return ResponseEntity.ok(chavePixService.consultaPorId(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<PixResponseRequestDTO>> consultaPorId(@RequestBody PixResponseRequestDTO pixResponseRequestDTO) throws PixException {
+    public ResponseEntity<List<PixGetResponseRequestDTO>> consultaPorId(@RequestBody PixGetResponseRequestDTO pixResponseRequestDTO) throws PixException {
         return ResponseEntity.ok(chavePixService.consulta(pixResponseRequestDTO));
     }
 
