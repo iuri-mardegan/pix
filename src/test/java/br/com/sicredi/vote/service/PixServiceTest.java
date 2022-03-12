@@ -33,9 +33,15 @@ public class PixServiceTest {
     private ChavePixRepository chavePixRepository;
 
     @Test
-    public void addPixTeste() throws PixException {
+    public void addPixCPFTeste() throws PixException {
         when(chavePixRepository.save(any(ChavePix.class))).thenReturn(new ChavePix());
-        chavePixService.addPix(pixPostRequestDTOMock());
+        chavePixService.addPix(pixPostRequestCPFDTOMock());
+    }
+
+    @Test
+    public void addPixCNPJTeste() throws PixException {
+        when(chavePixRepository.save(any(ChavePix.class))).thenReturn(new ChavePix());
+        chavePixService.addPix(pixPostRequestCNPJDTOMock());
     }
 
     @Test
@@ -66,7 +72,18 @@ public class PixServiceTest {
                 .sobrenomeCorrentista("Mardegan").build();
     }
 
-    private PixPostRequestDTO pixPostRequestDTOMock(){
+    private PixPostRequestDTO pixPostRequestCPFDTOMock(){
+        return PixPostRequestDTO.builder()
+                .tipoChave(TipoChave.CPF)
+                .valChave("48893784050")
+                .tipoConta(TipoConta.CORRENTE)
+                .numAgencia(1234L)
+                .numConta(12345678L)
+                .nomeCorrentista("Iuri")
+                .sobrenomeCorrentista("Mardegan").build();
+    }
+
+    private PixPostRequestDTO pixPostRequestCNPJDTOMock(){
         return PixPostRequestDTO.builder()
                 .tipoChave(TipoChave.CNPJ)
                 .valChave("82836894000119")
