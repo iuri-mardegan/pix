@@ -4,7 +4,11 @@ import br.com.sicredi.vote.dto.enums.TipoChave;
 import br.com.sicredi.vote.dto.enums.TipoConta;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 
 import java.util.Calendar;
 import java.util.UUID;
@@ -13,7 +17,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.USE_DEFAULTS)
 public class PixPutResponseDTO {
 
     @NonNull

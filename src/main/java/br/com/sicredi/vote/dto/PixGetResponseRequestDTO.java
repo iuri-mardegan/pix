@@ -16,7 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.USE_DEFAULTS)
 public class PixGetResponseRequestDTO {
 
     @JsonProperty(required = true)

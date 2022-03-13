@@ -2,7 +2,11 @@ package br.com.sicredi.vote.model;
 
 import br.com.sicredi.vote.dto.enums.StatusChave;
 import br.com.sicredi.vote.dto.enums.TipoChave;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.domain.Persistable;
 

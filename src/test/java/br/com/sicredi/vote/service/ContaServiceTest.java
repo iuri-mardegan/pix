@@ -1,7 +1,6 @@
 
 package br.com.sicredi.vote.service;
 
-import br.com.sicredi.vote.dto.PixPostRequestDTO;
 import br.com.sicredi.vote.dto.PixPutRequestDTO;
 import br.com.sicredi.vote.dto.enums.StatusChave;
 import br.com.sicredi.vote.dto.enums.TipoChave;
@@ -11,7 +10,6 @@ import br.com.sicredi.vote.model.ChavePix;
 import br.com.sicredi.vote.model.Conta;
 import br.com.sicredi.vote.repository.ChavePixRepository;
 import br.com.sicredi.vote.repository.ContaRepository;
-import br.com.sicredi.vote.service.interfaces.ChavePixService;
 import br.com.sicredi.vote.service.interfaces.ContaService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

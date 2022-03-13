@@ -1,6 +1,8 @@
 package br.com.sicredi.vote.service;
 
-import br.com.sicredi.vote.dto.*;
+import br.com.sicredi.vote.dto.PixPostRequestDTO;
+import br.com.sicredi.vote.dto.PixPutRequestDTO;
+import br.com.sicredi.vote.dto.PixPutResponseDTO;
 import br.com.sicredi.vote.dto.enums.StatusChave;
 import br.com.sicredi.vote.dto.enums.TipoPessoaConta;
 import br.com.sicredi.vote.exception.PixException;

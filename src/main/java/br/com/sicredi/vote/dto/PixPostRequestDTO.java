@@ -11,7 +11,7 @@ import lombok.NonNull;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.USE_DEFAULTS)
 public class PixPostRequestDTO {
 
     @NonNull

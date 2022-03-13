@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @Builder
-@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonInclude(JsonInclude.Include.USE_DEFAULTS)
 public class PixPutRequestDTO {
 
     @NonNull
