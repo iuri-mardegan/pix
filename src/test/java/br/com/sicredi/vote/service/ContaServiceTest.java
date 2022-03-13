@@ -18,11 +18,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.util.Calendar;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -39,10 +41,19 @@ public class ContaServiceTest {
     private ChavePixRepository chavePixRepository;
 
     @Test
-    public void addPixTeste() throws PixException {
+    public void atualizaContaTeste() throws PixException {
         when(chavePixRepository.findById(any(UUID.class))).thenReturn(Optional.of(chavePixMock()));
         when(contaRepository.save(any(Conta.class))).thenReturn(contaMock());
         contaService.atualizaConta(pixPutRequestDTOMock());
+    }
+
+    @Test
+    public void atualizaContaErrorTeste() throws PixException {
+        when(chavePixRepository.findById(any(UUID.class))).thenReturn(Optional.of(chavePixMock()));
+        when(contaRepository.save(any(Conta.class))).thenThrow(DataIntegrityViolationException.class);
+        assertThrows(PixException.class, () -> {
+            contaService.atualizaConta(pixPutRequestDTOMock());
+        });
     }
 
 
@@ -66,6 +77,7 @@ public class ContaServiceTest {
                 .conta(contaMock())
                 .build();
     }
+
     private Conta contaMock(){
         return Conta.builder()
                 .tipoConta(TipoConta.CORRENTE)

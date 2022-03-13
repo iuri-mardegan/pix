@@ -5,6 +5,8 @@ import br.com.sicredi.vote.dto.PixGetResponseRequestDTO;
 import br.com.sicredi.vote.dto.PixPostRequestDTO;
 import br.com.sicredi.vote.dto.PixPutRequestDTO;
 import br.com.sicredi.vote.dto.PixPutResponseDTO;
+import br.com.sicredi.vote.dto.enums.TipoChave;
+import br.com.sicredi.vote.dto.enums.TipoConta;
 import br.com.sicredi.vote.exception.PixException;
 import br.com.sicredi.vote.service.interfaces.ChavePixService;
 import br.com.sicredi.vote.service.interfaces.ContaService;
@@ -17,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -42,6 +45,14 @@ class PixControllerTest {
         this.mockMvc.perform(get("/pix/3430b233-adaf-4d87-9e12-bdf51f605f3b"))
                 .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void consultaPorIdErrorTest() throws Exception {
+        when(chavePixService.consultaPorId(any(UUID.class))).thenThrow(PixException.class);
+        this.mockMvc.perform(get("/pix/3430b233-adaf-4d87-9e12-bdf51f605f3b"))
+                .andDo(print())
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -83,13 +94,36 @@ class PixControllerTest {
     }
 
     @Test
-    public void consultaPorFiltroTest() throws Exception {
+    public void consultaPorFiltroErrorTest() throws Exception {
         when(chavePixService.consulta(any(PixGetResponseRequestDTO.class))).thenReturn(new ArrayList<PixGetResponseRequestDTO>());
         this.mockMvc.perform(get("/pix")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(pixGetResponseRequestDTOMock()))
                 .andDo(print())
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void consultaPorFiltroTest() throws Exception {
+        List<PixGetResponseRequestDTO> list = new ArrayList<>();
+        list.add(pixGetResponseRequestDTOObjectMock());
+        when(chavePixService.consulta(any(PixGetResponseRequestDTO.class))).thenReturn(list);
+        this.mockMvc.perform(get("/pix")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(pixGetResponseRequestDTOMock()))
+                .andDo(print())
                 .andExpect(status().isOk());
+    }
+
+    private PixGetResponseRequestDTO pixGetResponseRequestDTOObjectMock(){
+        return PixGetResponseRequestDTO.builder()
+                .tipoChave(TipoChave.CNPJ)
+                .valChave("82836894000119")
+                .tipoConta(TipoConta.CORRENTE)
+                .numAgencia(1234L)
+                .numConta(12345678L)
+                .nomeCorrentista("Iuri")
+                .sobrenomeCorrentista("Mardegan").build();
     }
 
     private String pixGetResponseRequestDTOMock(){
